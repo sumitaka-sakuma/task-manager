@@ -14,4 +14,11 @@ class TaskController extends Controller
 
         return view('tasks.index', compact('tasks'));
     }
+
+    public function detail(int $id){
+    
+        $task = Task::find($id);
+
+        return view('tasks.detail', compact('task'));
+    }
 }

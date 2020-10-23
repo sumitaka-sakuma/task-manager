@@ -15,4 +15,11 @@ class TaskControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testGetTasksPath(){
+    
+        $response = $this->get('/tasks/1');
+
+        $response->assertStatus(200);
+    }
 }
