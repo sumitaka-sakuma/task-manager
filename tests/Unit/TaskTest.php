@@ -46,4 +46,10 @@ class TaskTest extends TestCase
         $tasks = Task::find(2);
         $this->assertEquals('テストタスク', $tasks->title);
     }
+
+    //IDが0nの時タスクがnullであることを確認
+    public function testGetTaskDetailNotExists() {
+        $tasks = Task::find(0);
+        $this->assertNull($tasks);
+    }
 }

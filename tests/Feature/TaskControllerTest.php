@@ -22,4 +22,12 @@ class TaskControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    //存在しないIDが指定された時
+    public function testGetTaskPathNotExists(){
+
+        $response = $this->get('task/0');
+
+        $response->assertStatus(404);
+    }
 }
