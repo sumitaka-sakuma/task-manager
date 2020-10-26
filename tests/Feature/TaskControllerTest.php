@@ -5,9 +5,12 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskControllerTest extends TestCase
 {
+
+    use DatabaseTransactions;
     
     public function testGetAllTasksPath(){
     
@@ -25,11 +28,34 @@ class TaskControllerTest extends TestCase
 
     public function testPutTaskPath(){
 
-        $data = [];
+        $data = [
+            'title' => 'test title',
+        ];
+        
+        $this->assertDatabaseMissing('tasks', $data);
 
-        $response = $this->put('/task/1', $data);
+        $response = $this->put('/tasks/1', $data);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302)
+            ->assertRedirect('/tasks/1');
+
+        $this->assertDatabaseHas('tasks', $data);
+    }
+
+    public function testPutTaskPath2(){
+    
+        $data = [
+            'title' => 'テストタスク2',
+            'executed' => true,
+        ];
+        $this->assertDatabaseMissing('tasks', $data);
+
+        $response = $this->put('/tasks/2', $data);
+
+        $response->assertStatus(302)
+            ->assertRedirect('/tasks/2');
+
+        $this->assertDatabaseHas('tasks', $data);
     }
 
     //存在しないIDが指定された時
