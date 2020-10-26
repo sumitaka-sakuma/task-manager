@@ -17,8 +17,11 @@ class TasksIndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/tasks')
-                    ->assertSee('テストタスク')
-                    ->screenshot("tesks_index");
+                    //->assertSeeLink('テストタスク')
+                    //->clickLink('テストタスク')
+                    //->waitForLocation('/tasks/2', 1)
+                    ->assertPathIs('/tasks/2')
+                    ->assertInputValue('#title', 'テストタスク');
         });
     }
 }

@@ -21,4 +21,9 @@ class TaskController extends Controller
 
         return view('tasks.detail', compact('task'));
     }
+
+    public function update(int $id){
+
+        return redirect('/tasks/'.$id);
+    }
 }

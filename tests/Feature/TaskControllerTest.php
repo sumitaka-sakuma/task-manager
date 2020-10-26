@@ -23,6 +23,15 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testPutTaskPath(){
+
+        $data = [];
+
+        $response = $this->put('/task/1', $data);
+
+        $response->assertStatus(200);
+    }
+
     //存在しないIDが指定された時
     public function testGetTaskPathNotExists(){
 
