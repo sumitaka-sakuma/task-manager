@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Task;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +11,18 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class TaskControllerTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    use RefreshDatabase;
+
+    private $task;
+
+    protected function setUp(){
+    
+        parent::setUp();
+        $this->task = Task::create([
+            'title' => 'テストタスク',
+            'executed' => false,
+        ]);
+    }
     
     public function testGetAllTasksPath(){
     
@@ -21,7 +33,7 @@ class TaskControllerTest extends TestCase
 
     public function testGetTasksPath(){
     
-        $response = $this->get('/tasks/1');
+        $response = $this->get('/tasks/' . $this->task->id);
 
         $response->assertStatus(200);
     }
@@ -31,13 +43,13 @@ class TaskControllerTest extends TestCase
         $data = [
             'title' => 'test title',
         ];
-        
+
         $this->assertDatabaseMissing('tasks', $data);
 
-        $response = $this->put('/tasks/1', $data);
+        $response = $this->put('/tasks/' . $this->task->id, $data);
 
         $response->assertStatus(302)
-            ->assertRedirect('/tasks/1');
+            ->assertRedirect('/tasks/' . $this->task->id);
 
         $this->assertDatabaseHas('tasks', $data);
     }
@@ -50,10 +62,10 @@ class TaskControllerTest extends TestCase
         ];
         $this->assertDatabaseMissing('tasks', $data);
 
-        $response = $this->put('/tasks/2', $data);
+        $response = $this->put('/tasks/' . $this->task->id, $dataa);
 
         $response->assertStatus(302)
-            ->assertRedirect('/tasks/2');
+            ->assertRedirect('/tasks/' . $this->task->id);
 
         $this->assertDatabaseHas('tasks', $data);
     }
